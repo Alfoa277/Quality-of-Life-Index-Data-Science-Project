@@ -85,6 +85,9 @@ plot(barrios$`Edad Media`)
 plot(barrios$`Precio vivienda`)
 """No requiere transformacion"""
 
+#Apply Min-max normalization
+library(scales)
+
 minmaxed = data.frame(Barrio = nombre_barrios,
                       Educacion = rescale(new_educacion),
                       'Centros de Salud' = rescale(new_salud),
