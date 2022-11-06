@@ -15,7 +15,7 @@ def suma_ponderada(df, p):
         df: a dataframe of size [131 x n], where n is the number of indicators. All the values must be min-maxed normalized.
         p: list (length n) of coefficients for weighted sum
     """
-
+    benchmark = []
     sumas = []
 
     for i in range(len(df)):
@@ -28,12 +28,14 @@ def suma_ponderada(df, p):
         n_edad = df.loc[i, 'Edad media']
         n_precio = df.loc[i, 'Precio vivienda']
 
-        suma = n_educacion * p[0] + n_salud * p[1] + n_ocio * p[2] + n_parques * p[3] + n_transporte * p[
-            4] + n_deporte * p[5] - n_edad * p[6] - n_precio * p[7]
+        suma = n_educacion*p[0] + n_salud*p[1] + n_ocio*p[2] + n_parques*p[3] + n_transporte*p[4] + n_deporte*p[5] + (1-n_edad)*p[6] + (1-n_precio)*p[7]
+        bench = n_educacion + n_salud + n_ocio + n_parques + n_transporte + n_deporte + (1-n_edad) + (1-n_precio)
+        
         # suma_f = suma/sum(p)
         sumas.append(suma)
+        benchmark.append(bench)
 
-    return sumas
+    return sumas, benchmark
 
 #First example: Young college student
 #Selecciona tus pesos
@@ -41,13 +43,15 @@ pesos = {'Educacion': 0, 'Salud': 5 ,'Ocio': 10, 'Parques y Jardines': 2,'Transp
 p = list(pesos.values())
 
 #Calcula la suma ponderada y el ranking
-suma_p = suma_ponderada (df_barrios , p)
+suma_p, benchmark = suma_ponderada (df_barrios , p)
 ranking = pd.DataFrame()
-ranking['Nombre'] = list(df_barrios['Nombre'])
-ranking['Valor'] = suma_p
+ranking['Barrio'] = list(df_barrios['Barrio'])
+ranking['SumaPonderada'] = suma_p
+ranking['Benchmark'] = benchmark
+ranking.head()
 
 #Ordenarlo en base al valor
-by_value = ranking.sort_values('Valor')
+by_value = ranking.sort_values('SumaPonderada')
 top5 = by_value.tail()
 print(top5[::-1])
 
@@ -58,13 +62,15 @@ pesos = {'Educacion': 2, 'Salud': 10 ,'Ocio': 1, 'Parques y Jardines': 2,'Transp
 p = list(pesos.values())
 
 #Calcula la suma ponderada y el ranking
-suma_p = suma_ponderada (df_barrios , p)
+suma_p, benchmark = suma_ponderada (df_barrios , p)
 ranking = pd.DataFrame()
-ranking['Nombre'] = list(df_barrios['Nombre'])
-ranking['Valor'] = suma_p
+ranking['Barrio'] = list(df_barrios['Barrio'])
+ranking['SumaPonderada'] = suma_p
+ranking['Benchmark'] = benchmark
 ranking.head()
+
 #Ordenarlo en base al valor
-by_value = ranking.sort_values('Valor')
+by_value = ranking.sort_values('SumaPonderada')
 top5 = by_value.tail()
 print(top5[::-1])
 
@@ -74,13 +80,14 @@ pesos = {'Educacion': 10, 'Salud': 8 ,'Ocio': 3, 'Parques y Jardines': 7,'Transp
 p = list(pesos.values())
 
 #Calcula la suma ponderada y el ranking
-suma_p = suma_ponderada (df_barrios , p)
+suma_p, benchmark = suma_ponderada (df_barrios , p)
 ranking = pd.DataFrame()
-ranking['Nombre'] = list(df_barrios['Nombre'])
-ranking['Valor'] = suma_p
+ranking['Barrio'] = list(df_barrios['Barrio'])
+ranking['SumaPonderada'] = suma_p
+ranking['Benchmark'] = benchmark
 ranking.head()
 
 #Ordenarlo en base al valor
-by_value = ranking.sort_values('Valor')
+by_value = ranking.sort_values('SumaPonderada')
 top5 = by_value.tail()
 print(top5[::-1])
