@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import statistics
 
 df_barrios = pd.read_excel('minmaxed.xlsx')
 
@@ -10,13 +11,22 @@ df_barrios = pd.read_excel('minmaxed.xlsx')
 def suma_ponderada(df, p):
 
     """
-    Computes 'Quality of life' scores for the 131 neighborhoods in Madrid as a weighted sum.
+    Computes 'Quality of life' scores for the 131 neighborhoods in Madrid as a weighted sum. It also returns a benchmark value.
     Arguments:
         df: a dataframe of size [131 x n], where n is the number of indicators. All the values must be min-maxed normalized.
         p: list (length n) of coefficients for weighted sum
     """
     benchmark = []
     sumas = []
+    
+    educacion_mean = df['Educacion'].mean()
+    salud_mean = df['Centros de Salud'].mean()
+    ocio_mean = df['Ocio'].mean()
+    parques_mean = df['Parques y jardines'].mean()
+    transporte_mean = df['Transporte'].mean()
+    deporte_mean = df['Instalaciones deportivas'].mean()
+    edad_mean = df['Edad media'].mean()
+    precio_mean = df['Precio vivienda'].mean()
 
     for i in range(len(df)):
         n_educacion = df.loc[i, 'Educacion']
@@ -29,7 +39,7 @@ def suma_ponderada(df, p):
         n_precio = df.loc[i, 'Precio vivienda']
 
         suma = n_educacion*p[0] + n_salud*p[1] + n_ocio*p[2] + n_parques*p[3] + n_transporte*p[4] + n_deporte*p[5] + (1-n_edad)*p[6] + (1-n_precio)*p[7]
-        bench = n_educacion + n_salud + n_ocio + n_parques + n_transporte + n_deporte + (1-n_edad) + (1-n_precio)
+        bench = statistics.mean([educacion_mean, salud_mean, ocio_mean, parques_mean, transporte_mean, deporte_mean, (1-edad_mean), (1-precio_mean)])
         
         # suma_f = suma/sum(p)
         sumas.append(suma)
