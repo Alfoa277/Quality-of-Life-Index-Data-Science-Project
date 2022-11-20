@@ -19,9 +19,9 @@ def suma_poderada_orden(df, orden):
     benchmark = []
     sumas = []
 
-    p = {'1': 7, '2': 6, '3': 5, '4': 4, '5': 3, '6': 2, '7': 1, '8': 0}
+    p = {'1': 3/4, '2': 2/3, '3': 1/2, '4': 1/4, '5': 1/5, '6': 1/8, '7': 1/16, '8': 0}
 
-    median = 3.5
+    median = 0.225
 
     for i in range(len(df)):
         n_educacion = df.loc[i, 'Educacion']

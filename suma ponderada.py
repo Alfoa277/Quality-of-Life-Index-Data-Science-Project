@@ -19,6 +19,8 @@ def suma_ponderada(df, p):
     benchmark = []
     sumas = []
 
+    p = [i/10 for i in p]
+
     for i in range(len(df)):
         n_educacion = df.loc[i, 'Educacion']
         n_salud = df.loc[i, 'Salud']
@@ -29,7 +31,7 @@ def suma_ponderada(df, p):
         n_seguridad = df.loc[i, 'Seguridad']
         n_precio = df.loc[i, 'Precio vivienda']
 
-        median = statistics.median(p)
+        median = 0.5
 
         suma = n_educacion*p[0] + n_salud*p[1] + n_ociodiurno*p[2] + n_ocionocturno*p[3] + n_transporte*p[4] + n_entorno*p[5] + (1-n_seguridad)*p[6] + (1-n_precio)*p[7]
         bench = n_educacion*median + n_salud*median + n_ociodiurno*median + n_ocionocturno*median + n_transporte*median + n_entorno*median + (1-n_seguridad)*median + (1-n_precio)*median
@@ -42,7 +44,7 @@ def suma_ponderada(df, p):
 
 #First example: Young college student
 #Selecciona tus pesos
-pesos = {'Educacion': 0, 'Salud': 3 ,'Ocio Diurno': 5, 'Ocio Nocturno': 8,'Transporte': 8, 'Entorno': 6 ,'Seguridad': 5, 'Precio': 10 }
+pesos = {'Educacion': 0, 'Salud': 3 ,'Ocio Diurno': 3, 'Ocio Nocturno': 10,'Transporte': 5, 'Entorno': 2,'Seguridad': 2, 'Precio': 10 }
 p = list(pesos.values())
 
 #Calcula la suma ponderada y el ranking
@@ -81,7 +83,7 @@ print(top5[::-1])
 
 #Third example: A family
 #Selecciona tus pesos
-pesos = {'Educacion': 10, 'Salud': 8 ,'Ocio Diurno': 3, 'Ocio Nocturno': 7,'Transporte': 1, 'Entorno': 5,'Seguridad': 1, 'Precio': 2}
+pesos = {'Educacion': 10, 'Salud': 1 ,'Ocio Diurno': 1, 'Ocio Nocturno': 0,'Transporte': 0, 'Entorno': 3,'Seguridad': 9, 'Precio': 1}
 p = list(pesos.values())
 
 #Calcula la suma ponderada y el ranking
